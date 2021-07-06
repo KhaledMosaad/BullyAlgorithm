@@ -2,17 +2,19 @@ package com.company;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main {
-    public static Process[] processes=new Process[5];
+    public static Process[] processes;
     public static void main(String[] args) throws IOException {
+        processes=new Process[5];
         for(int i=0;i<5;i++)
         {
-            processes[i]=newProcess(String.valueOf(i+1));
+            processes[i]=newProcess(String.valueOf(i));
         }
-        Election.Begin();
     }
     public static Process newProcess(String args) throws IOException{
         String javaHome = System.getProperty("java.home");
