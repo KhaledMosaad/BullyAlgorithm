@@ -2,13 +2,13 @@ package com.company;
 
 
 import java.io.*;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class BullyNode {
 
@@ -38,9 +38,13 @@ public class BullyNode {
             Integer processPort = entry.getValue();
             if(processId>myId)
             {
-                receiveMessage(processPort);
-                sendMessage(processPort,"Election", myPort,myId);
-                flag++;
+               while(available(processPort))
+               {
+                   // wait
+               }
+               receiveMessage(processPort);
+               sendMessage(processPort, "Election", myPort, myId);
+               flag++;
             }
         }
         if(flag==0)
@@ -65,6 +69,7 @@ public class BullyNode {
         dataOut.flush();
         // close the stream
         dataOut.close();
+        clientSocket.close();
     }
 
     // and process receive message from here by it's socket
@@ -120,8 +125,17 @@ public class BullyNode {
             Long processId = entry.getKey();
             Integer processPort = entry.getValue();
             if(processPort!=myPort) {
-                receiveMessage(processPort);
-                sendMessage(processPort, message, myPort,myId);
+                try {
+                    while(available(processPort))
+                    {
+                        // wait
+                    }
+                    receiveMessage(processPort);
+                    sendMessage(processPort, message, myPort, myId);
+                }catch (BindException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -137,6 +151,14 @@ public class BullyNode {
             System.out.print("Coordinator ");
         }
         System.out.println("Process "+myId+": Receive '"+message+"' Message From Process "+senderId+" on "+ time);
+    }
+
+    private static boolean available(int port) {
+        try (Socket ignored = new Socket(host, port)) {
+            return false;
+        } catch (IOException ignored) {
+            return true;
+        }
     }
 
     // receiving the processes ids for each process in the system
