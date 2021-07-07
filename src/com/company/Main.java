@@ -31,12 +31,12 @@ public class Main {
             }
         }
         TimeUnit.SECONDS.sleep(1); // just wait until all processes created and listen to port
-        SendProcesses();
+        sendProcesses();
     }
 
 
     // sending processes ids and ports numbers to all processes
-    public static void SendProcesses() throws IOException {
+    public static void sendProcesses() throws IOException {
         for(int i=0;i<2;i++)
         {
             try {

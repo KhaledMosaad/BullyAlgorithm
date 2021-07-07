@@ -69,7 +69,7 @@ public class BullyNode {
 
     // and process receive message from here by it's socket
     // this function also recursive with sendMessage method to send and receive messages
-    private static String receiveMessage(int port) throws IOException {
+    private static void receiveMessage(int port) throws IOException {
         try {
 
             System.out.println("Port = " + port + " id = " + myId + " My Port = " + myPort);
@@ -112,7 +112,6 @@ public class BullyNode {
         {
             e.printStackTrace();
         }
-        return null;
     }
 
     // this method just fire for coordinator to send messages for all processes
