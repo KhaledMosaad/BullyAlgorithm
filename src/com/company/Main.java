@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         processesId=new HashMap<>();
-        for(int i=0;i<5;i++)
+        for(int i=0;i<2;i++) // it's just fixed length right now
         {
             try {
 
@@ -30,12 +30,14 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        TimeUnit.SECONDS.sleep(10); // just wait until all processes created and listen to port
+        TimeUnit.SECONDS.sleep(1); // just wait until all processes created and listen to port
         SendProcesses();
     }
 
+
+    // sending processes ids and ports numbers to all processes
     public static void SendProcesses() throws IOException {
-        for(int i=0;i<5;i++)
+        for(int i=0;i<2;i++)
         {
             try {
                 myClientSocket = new Socket("127.0.0.1", i + 10001);
@@ -49,6 +51,8 @@ public class Main {
             }
         }
     }
+
+    // fire a new process
     public static Long newBullyNode(String args) throws IOException{
         String javaHome = System.getProperty("java.home");
         String javaBin = javaHome +
